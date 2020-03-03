@@ -15,7 +15,7 @@ namespace Lights {
         public string CmdName;
         public string CmdAlias;
         public string TrueArguments;
-        public int AnnounceDuration;
+        public uint AnnounceDuration;
         public bool DoAnnouncement;
         public string Announcement;
         #endregion
@@ -55,7 +55,7 @@ namespace Lights {
             CmdName = Config.GetString("lights_command", "lights");
             CmdAlias = Config.GetString("lights_alias", "l");
             TrueArguments = Config.GetString("lights_true_arguments", "true,t,yes,y").ToLower();
-            AnnounceDuration = Config.GetInt("lights_announce_duration", 10);
+            AnnounceDuration = Config.GetUInt("lights_announce_duration", 10);
             DoAnnouncement = Config.GetBool("lights_announce", true);
             Announcement = Config.GetString("lights_announce_text", "l");
             #endregion
