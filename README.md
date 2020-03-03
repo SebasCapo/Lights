@@ -23,12 +23,13 @@ These are the variables that should be added to your 7777-config.yml. Or simply 
 | lights_true_arguments | All different arguments that are accepted as "true". **(Don't use spaces!)** | `true,t,yes,y` |
 | lights_announce | Whether or not to broadcast a message when lights go spooky | `true` |
 | lights_announce_duration | For how long should the broadcast display | `10` |
-| lights_announce_text | What should the broadcast display? | `<color=aqua>Lights have been turned off by %player for %ss! SpooOOOººOoooky!</color>` |
+| lights_announce_text | What should the broadcast display? (%player = Whoever used the command and %s = How long the blackout is going to last. | `<color=aqua>Lights have been turned off by %player for %ss! SpooOOOººOoooky!</color>` |
 | lights_message_access_denied | Message displayed when player doesn't have permissions to use the command | `<color=red>Access denied.</color>` |
-| lights_message_help | Message displayed when syntax is incorrect 1/2 | `<color=red>Command usage: " </color><color=yellow>%cmd <seconds> </color><color=#ab0be6>[true/yes] </color><color=red>"</color>` |
+| lights_message_help | Message displayed when syntax is incorrect (%cmd = Displays the command used, it's just a cute detail) 1/2 | `<color=red>Command usage: " </color><color=yellow>%cmd <seconds> </color><color=#ab0be6>[true/yes] </color><color=red>"</color>` |
 | lights_message_help2 | Message display when syntax is incorrect 2/2 | `<color=red><> is necessary -- [] is optional</color>` |
-| lights_message_not_recognized | Warning message if third argument is invalid | `<color=red>Argument "%arg" can't be recognized, using default value</color>` |
-| lights_message_success | Message displayed when you're a good boy | `<color=#13c706>Lights have been turned off for:<b> %ss </b>(HCZ Only? : <b>%value</b>)</color>` |
+| lights_message_not_recognized | Warning message if third argument is invalid (%arg = 3rd argument used on the command, default is "true") | `<color=red>Argument "%arg" can't be recognized, using default value</color>` |
+| lights_message_success | Message displayed when you're a good boy (%s = How long the blackout's gonna last and %value = Whether or not the blackout's gonna be HCZ only or HCZ & LCZ) | `<color=#13c706>Lights have been turned off for:<b> %ss </b>(HCZ Only? : <b>%value</b>)</color>` |
+*Note: All the "%whatever" variables are **NOT** needed. They're there to make this plugin more customizable.
 
 ### Permissions
 These are the permissions that should be added to your permissions.yml inside your "%appdata%/Roaming/Plugins/Exiled Permissions" folder.
