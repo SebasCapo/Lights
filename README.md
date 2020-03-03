@@ -15,7 +15,7 @@ Arguments inside &lt;&gt; are required. [] means it's optional.
 | `lights_reload` | Reload plugin's variables inside 7777-config.yml | **None. Even more yay!** |
 
 ### Configuration
-These are the variables that should be added to your 7777-config.yml. Or simply download/copy the config-file example
+These are the variables that should be added to your 7777-config.yml. Or simply download/copy the [config-file example](https://github.com/SebasCapo/Lights/blob/master/LightsPlugin/Example/7777-config.yml)
 | Variable  | Description | Default value |
 | ------------- | ------------- | ------------- |
 | lights_command | Changes the main command. ("lights_reload" stays unchanged to avoid problems) | `light` |
