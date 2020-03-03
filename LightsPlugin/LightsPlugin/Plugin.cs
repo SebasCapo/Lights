@@ -47,7 +47,7 @@ namespace Lights {
             Config.Reload();
 
             #region Lights Config
-            AccessDenied = Config.GetString("lights_message_access_denied", "<color=red>Access Denied</color>");
+            AccessDenied = Config.GetString("lights_message_access_denied", "<color=red>Access Denied.</color>");
             HelpOne = Config.GetString("lights_message_help", "<color=red>Command usage: " + '"' + "</color><color=yellow>%cmd <seconds> </color><color=#ab0be6>[true/yes] </color><color=red>" + '"' + "</color>");
             HelpTwo = Config.GetString("lights_message_help2", "<color=red><> is necessary -- [] is optional</color>");
             NotRecognized = Config.GetString("lights_message_not_recognized", "<color=red>Argument " + '"' + "%arg" + '"' + " can't be recognized, using default value.</color>");
