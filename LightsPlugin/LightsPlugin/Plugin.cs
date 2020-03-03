@@ -49,15 +49,15 @@ namespace Lights {
             #region Lights Config
             AccessDenied = Config.GetString("lights_message_access_denied", "<color=red>Access Denied.</color>");
             HelpOne = Config.GetString("lights_message_help", "<color=red>Command usage: " + '"' + "</color><color=yellow>%cmd <seconds> </color><color=#ab0be6>[true/yes] </color><color=red>" + '"' + "</color>");
-            HelpTwo = Config.GetString("lights_message_help2", "<color=red><> is necessary -- [] is optional</color>");
+            HelpTwo = Config.GetString("lights_message_help2", "<color=red><> is necessary -- [] is optional.</color>");
             NotRecognized = Config.GetString("lights_message_not_recognized", "<color=red>Argument " + '"' + "%arg" + '"' + " can't be recognized, using default value.</color>");
             Success = Config.GetString("lights_message_success", "<color=#13c706>Lights have been turned off for:<b> %ss </b>(HCZ Only? : <b>%value</b>)</color>");
             CmdName = Config.GetString("lights_command", "lights");
-            CmdAlias = Config.GetString("lights_alias", "l");
+            CmdAlias = Config.GetString("lights_alias", "ls");
             TrueArguments = Config.GetString("lights_true_arguments", "true,t,yes,y").ToLower();
             AnnounceDuration = Config.GetUInt("lights_announce_duration", 10);
             DoAnnouncement = Config.GetBool("lights_announce", true);
-            Announcement = Config.GetString("lights_announce_text", "l");
+            Announcement = Config.GetString("lights_announce_text", "<color=aqua>Lights have been turned off by %player for %ss! SpooOOOººOoooky!</color>");
             #endregion
         }
 
