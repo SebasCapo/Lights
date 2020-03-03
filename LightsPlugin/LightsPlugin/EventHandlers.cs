@@ -53,7 +53,10 @@ namespace Lights {
                             else ev.Sender.RAMessage(plugin.NotRecognized.Replace("%arg", args [ 2 ]));
                         }
                         ev.Sender.RAMessage(plugin.Success.Replace("%s", args [ 1 ]).Replace("%value" , OnlyHCZ + ""));
-                        
+                        if ( plugin.DoAnnouncement ) {
+                            foreach ( ReferenceHub h in Plugin.GetHubs() )
+                                h.Broadcast(plugin.AnnounceDuration, plugin.Announcement);
+                        }
                         Generator079.generators [ 0 ].RpcCustomOverchargeForOurBeautifulModCreators(int.Parse(args [ 1 ]), OnlyHCZ);
                         return;
                     }
