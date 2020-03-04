@@ -66,17 +66,6 @@ namespace Lights {
                     return;
                 }
                 #endregion
-
-                //if ( args [ 0 ].ToLower() == "hptest" ) {
-                //    ev.Allow = false;
-                //    foreach ( ReferenceHub hub in Plugin.GetHubs() ) {
-                //        hub.playerStats.health = 50;
-                //        hub.playerStats.maxArtificialHealth = 200;
-                //    }
-                //    return;
-                //}
-                #region Command: HpAll
-                #endregion
                 return;
             } catch ( Exception e ) {
                 Log.Error("Command error: " + e.StackTrace);
