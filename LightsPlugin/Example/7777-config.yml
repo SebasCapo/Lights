@@ -11,3 +11,10 @@ lights_message_help: <color=red>Command usage: " </color><color=yellow>%cmd <sec
 lights_message_help2: <color=red><> is necessary -- [] is optional</color>
 lights_message_not_recognized: <color=red>Argument "%arg" can't be recognized, using default value</color>
 lights_message_success: <color=#13c706>Lights have been turned off for:<b> %ss </b>(HCZ Only? : <b>%value</b>)</color>
+
+lights_cassie_announceforhcz: true
+lights_cassie_announceforboth: true
+lights_cassie_makenoise: false
+# Check this guide: https://steamcommunity.com/sharedfiles/filedetails/?id=1577299753
+lights_cassie_announcement_hcz: heavy containment zone generator .g3 malfunction detected .g4 .g3 .g3 .g4
+lights_cassie_announcement_both: generator .g3 malfunction detected .g4 .g3 .g3 .g4
