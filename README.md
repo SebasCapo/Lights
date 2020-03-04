@@ -29,7 +29,13 @@ These are the variables that should be added to your 7777-config.yml. Or simply 
 | lights_message_help2 | Message display when syntax is incorrect 2/2 | `<color=red><> is necessary -- [] is optional</color>` |
 | lights_message_not_recognized | Warning message if third argument is invalid (%arg = 3rd argument used on the command, default is "true") | `<color=red>Argument "%arg" can't be recognized, using default value</color>` |
 | lights_message_success | Message displayed when you're a good boy (%s = How long the blackout's gonna last and %value = Whether or not the blackout's gonna be HCZ only or HCZ & LCZ) | `<color=#13c706>Lights have been turned off for:<b> %ss </b>(HCZ Only? : <b>%value</b>)</color>` |
+| lights_cassie_announcement_hcz | This is what CASSIE says when light's are turned off in HCZ | heavy containment zone generator .g3 malfunction detected .g4 .g3 .g3 .g4 |
+| lights_cassie_announcement_both | This is what CASSIE says when light's are turned off in HCZ & LCZ | generator .g3 malfunction detected .g4 .g3 .g3 .g4 |
+| lights_cassie_announceforhcz | Toggles whether CASSIE announces lights are being turned off in HCZ | false |
+| lights_cassie_announceforboth | Toggles whether CASSIE announces lights are being turned off in  | false |
+| lights_cassie_makenoise | Should CASSIE's announcement make a sound at the start/end of his sentence? | true |
 *Note: All the "%whatever" variables are **NOT** needed. They're there to make this plugin more customizable.
+***IMPORTANT: Check [THIS](https://steamcommunity.com/sharedfiles/filedetails/?id=1577299753) post to see how CASSIE's system works.**
 
 ### Permissions
 These are the permissions that should be added to your permissions.yml inside your "%appdata%/Roaming/Plugins/Exiled Permissions" folder.
