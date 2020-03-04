@@ -55,15 +55,29 @@ namespace Lights {
                         ev.Sender.RAMessage(plugin.Success.Replace("%s", args [ 1 ]).Replace("%value" , OnlyHCZ + ""));
                         if ( plugin.DoAnnouncement ) {
                             foreach ( ReferenceHub h in Plugin.GetHubs() )
-                                h.Broadcast(plugin.AnnounceDuration, plugin.Announcement);
+                                h.Broadcast(plugin.AnnounceDuration, plugin.Announcement.Replace("%player", ev.Sender.Nickname).Replace("%s", args[1]));
                         }
+
+                        if ( OnlyHCZ && plugin.CassieAnnounceHCZ) plugin.cassieMessage(plugin.CassieAnnouncement);
+                        else if ( !OnlyHCZ && plugin.CassieAnnounceBoth ) plugin.cassieMessage(plugin.CassieAnnouncementBoth);
                         Generator079.generators [ 0 ].RpcCustomOverchargeForOurBeautifulModCreators(int.Parse(args [ 1 ]), OnlyHCZ);
                         return;
                     }
                     return;
                 }
                 #endregion
-              return;
+
+                //if ( args [ 0 ].ToLower() == "hptest" ) {
+                //    ev.Allow = false;
+                //    foreach ( ReferenceHub hub in Plugin.GetHubs() ) {
+                //        hub.playerStats.health = 50;
+                //        hub.playerStats.maxArtificialHealth = 200;
+                //    }
+                //    return;
+                //}
+                #region Command: HpAll
+                #endregion
+                return;
             } catch ( Exception e ) {
                 Log.Error("Command error: " + e.StackTrace);
             }
