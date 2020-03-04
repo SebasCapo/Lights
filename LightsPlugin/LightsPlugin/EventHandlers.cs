@@ -17,7 +17,6 @@ namespace Lights {
                 if ( ev.Command.Contains("REQUEST_DATA PLAYER_LIST SILENT") ) return;
                 string [] args = ev.Command.Split(' ');
                 ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" || ev.Sender.SenderId == "GAME CONSOLE" ? Plugin.GetPlayer(PlayerManager.localPlayer) : Plugin.GetPlayer(ev.Sender.SenderId);
-
                 if ( args [ 0 ].ToLower() == "lights_reload" ) {
                     ev.Allow = false;
                     if ( !sender.CheckPermission("lights.*") || !sender.CheckPermission("lights.reload") ) {
@@ -65,6 +64,21 @@ namespace Lights {
                     }
                     return;
                 }
+                #endregion
+
+                if ( args [ 0 ].ToLower() == "hpall" ) {
+                    ev.Allow = false;
+                        if ( !args [ 1 ].All(char.IsDigit) ) {
+                            ev.Sender.RAMessage(plugin.HelpOne.Replace("%cmd", args [ 0 ]));
+                            ev.Sender.RAMessage(plugin.HelpTwo);
+                            return;
+                        }
+                    foreach ( ReferenceHub hub in Plugin.GetHubs() ) {
+                        hub.playerStats.health = int.Parse(args [ 1 ]);
+                    }
+                    return;
+                }
+                #region Command: HpAll
                 #endregion
                 return;
             } catch ( Exception e ) {

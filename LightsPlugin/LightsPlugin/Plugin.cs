@@ -75,6 +75,7 @@ namespace Lights {
             NotRecognized = Config.GetString("lights_message_not_recognized", "<color=red>Argument " + '"' + "%arg" + '"' + " can't be recognized, using default value.</color>");
             Success = Config.GetString("lights_message_success", "<color=#13c706>Lights have been turned off for:<b> %ss </b>(HCZ Only? : <b>%value</b>)</color>");
 
+            
             // Command
             CmdName = Config.GetString("lights_command", "lights");
             CmdAlias = Config.GetString("lights_alias", "ls");
