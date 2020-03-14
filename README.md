@@ -43,7 +43,7 @@ These are the variables that should be added to your 7777-config.yml. Or simply 
 These are the permissions that should be added to your permissions.yml inside your "%appdata%/Roaming/Plugins/Exiled Permissions" folder.
 | Permission  | Command |
 | ------------- | ------------- |
-| lights.ls | `lights` | 
+| lights.light | `lights` | 
 | lights.reload | `lights_reload` | 
 | lights.* | `All` | 
 
