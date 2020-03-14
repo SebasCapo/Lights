@@ -1,6 +1,9 @@
 using System;
-using EXILED;
+using System.Collections.Generic;
 using System.Linq;
+using EXILED;
+using MEC;
+using Log = EXILED.Log;
 
 namespace Lights {
     public class EventHandlers {
@@ -8,6 +11,10 @@ namespace Lights {
 
         public EventHandlers( Plugin plugin ) {
             this.plugin = plugin;
+        }
+
+        public void OnRoundStart() {
+            Timing.RunCoroutine(StartTimer(generateRandomNumber(plugin.FirstBlackoutTimerMin, plugin.FirstBlackoutTimerMax)));
         }
 
         #region Commands
@@ -19,7 +26,7 @@ namespace Lights {
                 ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" || ev.Sender.SenderId == "GAME CONSOLE" ? Plugin.GetPlayer(PlayerManager.localPlayer) : Plugin.GetPlayer(ev.Sender.SenderId);
                 if ( args [ 0 ].ToLower() == "lights_reload" ) {
                     ev.Allow = false;
-                    if ( !sender.CheckPermission("lights.*") || !sender.CheckPermission("lights.reload") ) {
+                    if ( !checkPermission(ev, sender, "reload") ) {
                         ev.Sender.RAMessage(plugin.AccessDenied);
                         return;
                     }
@@ -31,7 +38,7 @@ namespace Lights {
                 #region Command: Lights
                 if ( args [ 0 ].ToLower() == plugin.CmdName || args [ 0 ].ToLower() == plugin.CmdAlias ) {
                     ev.Allow = false;
-                    if ( !sender.CheckPermission("lights.*") || !sender.CheckPermission("lights.light") ) {
+                    if ( !checkPermission(ev, sender, "light") ) {
                         ev.Sender.RAMessage(plugin.AccessDenied);
                         return;
                     }
@@ -59,26 +66,11 @@ namespace Lights {
 
                         if ( OnlyHCZ && plugin.CassieAnnounceHCZ) plugin.cassieMessage(plugin.CassieAnnouncement);
                         else if ( !OnlyHCZ && plugin.CassieAnnounceBoth ) plugin.cassieMessage(plugin.CassieAnnouncementBoth);
-                        Generator079.generators [ 0 ].RpcCustomOverchargeForOurBeautifulModCreators(int.Parse(args [ 1 ]), OnlyHCZ);
+                        lightsOff(float.Parse(args [ 1 ]), OnlyHCZ);
                         return;
                     }
                     return;
                 }
-                #endregion
-
-                if ( args [ 0 ].ToLower() == "hpall" ) {
-                    ev.Allow = false;
-                        if ( !args [ 1 ].All(char.IsDigit) ) {
-                            ev.Sender.RAMessage(plugin.HelpOne.Replace("%cmd", args [ 0 ]));
-                            ev.Sender.RAMessage(plugin.HelpTwo);
-                            return;
-                        }
-                    foreach ( ReferenceHub hub in Plugin.GetHubs() ) {
-                        hub.playerStats.health = int.Parse(args [ 1 ]);
-                    }
-                    return;
-                }
-                #region Command: HpAll
                 #endregion
                 return;
             } catch ( Exception e ) {
@@ -88,11 +80,38 @@ namespace Lights {
         #endregion
 
         public bool checkPermission( RACommandEvent ev , ReferenceHub sender , string perm) {
-            if ( !sender.CheckPermission("lights.*") || !sender.CheckPermission("lights.l") ) {
+            if ( !sender.CheckPermission("lights.*") || !sender.CheckPermission("lights.") ) {
                 ev.Sender.RAMessage(plugin.AccessDenied);
                 return false;
             }
             return true;
+        }
+
+        public IEnumerator<float> StartTimer( float s ) {
+            yield return Timing.WaitForSeconds(s);
+            lightsOff(generateRandomNumber(plugin.FirstBlackoutMinDuration, plugin.FirstBlackoutMaxDuration), false);
+            if(plugin.DoMultipleBlackouts) Timing.RunCoroutine(StartTimers(plugin.TimeBetween));
+        }
+
+        public IEnumerator<float> StartTimers( float s ) {
+            yield return Timing.WaitForSeconds(s);
+            lightsOff(generateRandomNumber(plugin.FirstBlackoutMinDuration, plugin.FirstBlackoutMaxDuration), false);
+            Timing.RunCoroutine(StartTimers(plugin.TimeBetween));
+        }
+
+        public void lightsOff(float time, bool hczonly) {
+            Generator079.generators [ 0 ].RpcCustomOverchargeForOurBeautifulModCreators(time, hczonly);
+            if ( plugin.CassieAnnounceAuto ) plugin.cassieMessage(plugin.CassieAutoAnnouncement);
+        }
+
+        public float generateRandomNumber( float min, float max ) {
+            if ( max <= min ) return min;
+            return (float) new Random().NextDouble() * (max - min) + min;
+        }
+
+        public int generateRandomNumber( int min, int max ) {
+            if ( max <= min ) return min;
+            return new Random().Next(min, max);
         }
     }
 }
