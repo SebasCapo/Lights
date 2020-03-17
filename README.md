@@ -34,10 +34,21 @@ These are the variables that should be added to your 7777-config.yml. Or simply 
 | lights_cassie_announceforhcz | Toggles whether CASSIE announces lights are being turned off in HCZ | false |
 | lights_cassie_announceforboth | Toggles whether CASSIE announces lights are being turned off in  | false |
 | lights_cassie_makenoise | Should CASSIE's announcement make a sound at the start/end of his sentence? | true |
+| lights_startblackout_toggle | **NEW** Toggles whether there is automatic blackout(s) | false |
+| lights_startblackout_delay_max | **NEW** Once the round starts, how many seconds can pass for the first automatic blackout to happen? | 60 |
+|lights_startblackout_delay_min | **NEW** Once the round starts,  how many seconds should pass for the first auto-blackout to happen? | 60f |
+| lights_multipleblackout_toggle | Should there be multiple auto-blackouts after the first one? | false |
+| lights_multipleblackout_duration_max | **NEW** How long can the auto-blackout last for? | 8 |
+| lights_multipleblackout_duration_min | **NEW** How long will the auto-blackout at least last for? | 5 |
+| lights_multipleblackout_timebetween | **NEW** Time between each auto-blackout | 5 |
+| lights_cassie_announcement_auto | **NEW!** What CASSIE says during an auto-blackout | generator .g3 automatic reactivation started .g3 .g4 |
+| lights_cassie_announceauto | **NEW!** Toggles whether CASSIE announces auto-blackouts | true |
 
 *Note: All the "%whatever" variables are **NOT** needed. They're there to make this plugin more customizable.
 
 ***IMPORTANT: Check [THIS](https://steamcommunity.com/sharedfiles/filedetails/?id=1577299753) post to see how CASSIE's system works.**
+
+***ALSO IMPORTANT: The config variable "lights_multipleblackout_timebetween" is set to a very low value for testing purposes, I recommend setting that to a higher value!**
 
 ### Permissions
 These are the permissions that should be added to your permissions.yml inside your "%appdata%/Roaming/Plugins/Exiled Permissions" folder.
