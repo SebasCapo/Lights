@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EXILED;
+using EXILED.Extensions;
 using MEC;
 using Log = EXILED.Log;
 
@@ -23,7 +24,7 @@ namespace Lights {
             try {
                 if ( ev.Command.Contains("REQUEST_DATA PLAYER_LIST SILENT") ) return;
                 string [] args = ev.Command.Split(' ');
-                ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" || ev.Sender.SenderId == "GAME CONSOLE" ? Plugin.GetPlayer(PlayerManager.localPlayer) : Plugin.GetPlayer(ev.Sender.SenderId);
+                ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" || ev.Sender.SenderId == "GAME CONSOLE" ? Player.GetPlayer(PlayerManager.localPlayer) : Player.GetPlayer(ev.Sender.SenderId);
                 if ( args [ 0 ].ToLower() == "lights_reload" ) {
                     ev.Allow = false;
                     if ( !checkPermission(ev, sender, "reload") ) {
@@ -60,7 +61,7 @@ namespace Lights {
                         }
                         ev.Sender.RAMessage(plugin.Success.Replace("%s", args [ 1 ]).Replace("%value" , OnlyHCZ + ""));
                         if ( plugin.DoAnnouncement ) {
-                            foreach ( ReferenceHub h in Plugin.GetHubs() )
+                            foreach ( ReferenceHub h in Player.GetHubs() )
                                 h.Broadcast(plugin.AnnounceDuration, plugin.Announcement.Replace("%player", ev.Sender.Nickname).Replace("%s", args[1]));
                         }
 

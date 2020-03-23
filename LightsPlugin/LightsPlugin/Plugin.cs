@@ -98,7 +98,7 @@ namespace Lights {
             // Timers
             DoFirstBlackout = Config.GetBool("lights_startblackout_toggle", false);
             FirstBlackoutTimerMax = Config.GetFloat("lights_startblackout_delay_max", 60f);
-            FirstBlackoutTimerMax = Config.GetFloat("lights_startblackout_delay_min", 60f);
+            FirstBlackoutTimerMin = Config.GetFloat("lights_startblackout_delay_min", 60f);
             FirstBlackoutMaxDuration = Config.GetFloat("lights_startblackout_duration_max", 15f);
             FirstBlackoutMinDuration = Config.GetFloat("lights_startblackout_duration_min", 10f);
 
@@ -115,7 +115,7 @@ namespace Lights {
             // Broadcast
             AnnounceDuration = Config.GetUInt("lights_announce_duration", 10);
             DoAnnouncement = Config.GetBool("lights_announce", true);
-            Announcement = Config.GetString("lights_announce_text", "<color=aqua>Lights have been turned off by %player for %ss! SpooOOOººOoooky!</color>");
+            Announcement = Config.GetString("lights_announce_text", "<color=aqua>Lights have been turned off by %player for %ss! SpooOOOï¿½ï¿½Ooooky!</color>");
 
             // C.A.S.S.I.E.
             CassieAutoAnnouncement = Config.GetString("lights_cassie_announcement_auto", "generator .g3 automatic reactivation started .g3 .g4");
