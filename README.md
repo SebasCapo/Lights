@@ -38,9 +38,9 @@ These are the variables that should be added to your 7777-config.yml. Or simply 
 | lights_startblackout_delay_max | **NEW** Once the round starts, how many seconds can pass for the first automatic blackout to happen? | 60f |
 |lights_startblackout_delay_min | **NEW** Once the round starts,  how many seconds should pass for the first auto-blackout to happen? | 60f |
 | lights_multipleblackout_toggle | Should there be multiple auto-blackouts after the first one? | false |
-| lights_multipleblackout_duration_max | **NEW** How long can the auto-blackout last for? | 8 |
-| lights_multipleblackout_duration_min | **NEW** How long will the auto-blackout at least last for? | 5 |
-| lights_multipleblackout_timebetween | **NEW** Time between each auto-blackout | 5 |
+| lights_multipleblackout_duration_max | **NEW** How long can the auto-blackout last for? | 8f |
+| lights_multipleblackout_duration_min | **NEW** How long will the auto-blackout at least last for? | 5f |
+| lights_multipleblackout_timebetween | **NEW** Time between each auto-blackout | 5f |
 | lights_cassie_announcement_auto | **NEW!** What CASSIE says during an auto-blackout | generator .g3 automatic reactivation started .g3 .g4 |
 | lights_cassie_announceauto | **NEW!** Toggles whether CASSIE announces auto-blackouts | true |
 
