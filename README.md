@@ -35,7 +35,7 @@ These are the variables that should be added to your 7777-config.yml. Or simply 
 | lights_cassie_announceforboth | Toggles whether CASSIE announces lights are being turned off in  | false |
 | lights_cassie_makenoise | Should CASSIE's announcement make a sound at the start/end of his sentence? | true |
 | lights_startblackout_toggle | **NEW** Toggles whether there is automatic blackout(s) | false |
-| lights_startblackout_delay_max | **NEW** Once the round starts, how many seconds can pass for the first automatic blackout to happen? | 60 |
+| lights_startblackout_delay_max | **NEW** Once the round starts, how many seconds can pass for the first automatic blackout to happen? | 60f |
 |lights_startblackout_delay_min | **NEW** Once the round starts,  how many seconds should pass for the first auto-blackout to happen? | 60f |
 | lights_multipleblackout_toggle | Should there be multiple auto-blackouts after the first one? | false |
 | lights_multipleblackout_duration_max | **NEW** How long can the auto-blackout last for? | 8 |
