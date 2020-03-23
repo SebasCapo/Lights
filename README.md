@@ -32,7 +32,7 @@ These are the variables that should be added to your 7777-config.yml. Or simply 
 | lights_cassie_announcement_hcz | This is what CASSIE says when light's are turned off in HCZ | heavy containment zone generator .g3 malfunction detected .g4 .g3 .g3 .g4 |
 | lights_cassie_announcement_both | This is what CASSIE says when light's are turned off in HCZ & LCZ | generator .g3 malfunction detected .g4 .g3 .g3 .g4 |
 | lights_cassie_announceforhcz | Toggles whether CASSIE announces lights are being turned off in HCZ | false |
-| lights_cassie_announceforboth | Toggles whether CASSIE announces lights are being turned off in  | false |
+| lights_cassie_announceforboth | Toggles whether CASSIE announces lights are being turned off in HCZ & LCZ | false |
 | lights_cassie_makenoise | Should CASSIE's announcement make a sound at the start/end of his sentence? | true |
 | lights_startblackout_toggle | **NEW** Toggles whether there is automatic blackout(s) | false |
 | lights_startblackout_delay_max | **NEW** Once the round starts, how many seconds can pass for the first automatic blackout to happen? | 60f |
