@@ -13,8 +13,7 @@ namespace Lights {
         // Text
         public bool debugMode;
         public string AccessDenied;
-        public string HelpOne;
-        public string HelpTwo;
+        public string HelpMessage;
         public string NotRecognized;
         public string Success;
 
@@ -26,9 +25,11 @@ namespace Lights {
         public float FirstBlackoutMinDuration;
 
         public bool DoMultipleBlackouts;
-        public float TimeBetween;
-        public float BlackoutMaxDurations;
-        public float BlackoutMinDurations;
+        public float TimeBetweenMin;
+        public float TimeBetweenMax;
+        public float BlackoutMaxDuration;
+        public float BlackoutMinDuration;
+        public int maxAmount;
 
         // Command
         public string CmdName;
@@ -90,22 +91,24 @@ namespace Lights {
             // Text
             debugMode = Config.GetBool("lights_debug", true);
             AccessDenied = Config.GetString("lights_message_access_denied", "<color=red>Access Denied.</color>");
-            HelpOne = Config.GetString("lights_message_help", "<color=red>Command usage: " + '"' + "</color><color=yellow>%cmd <seconds> </color><color=#ab0be6>[true/yes] </color><color=red>" + '"' + "</color>");
-            HelpTwo = Config.GetString("lights_message_help2", "<color=red><> is necessary -- [] is optional.</color>");
+            HelpMessage = Config.GetString("lights_message_help", "<color=red>Command usage: " + '"' + "</color><color=yellow>%cmd <seconds> </color><color=#ab0be6>[true/yes] </color><color=red>" + '"' + "</color>" +
+                "\n<color=red><> is necessary -- [] is optional.</color>");
             NotRecognized = Config.GetString("lights_message_not_recognized", "<color=red>Argument " + '"' + "%arg" + '"' + " can't be recognized, using default value.</color>");
             Success = Config.GetString("lights_message_success", "<color=#13c706>Lights have been turned off for:<b> %ss </b>(HCZ Only? : <b>%value</b>)</color>");
 
             // Timers
             DoFirstBlackout = Config.GetBool("lights_startblackout_toggle", false);
             FirstBlackoutTimerMax = Config.GetFloat("lights_startblackout_delay_max", 60f);
-            FirstBlackoutTimerMax = Config.GetFloat("lights_startblackout_delay_min", 60f);
+            FirstBlackoutTimerMin = Config.GetFloat("lights_startblackout_delay_min", 50f);
             FirstBlackoutMaxDuration = Config.GetFloat("lights_startblackout_duration_max", 15f);
             FirstBlackoutMinDuration = Config.GetFloat("lights_startblackout_duration_min", 10f);
 
             DoMultipleBlackouts = Config.GetBool("lights_multipleblackout_toggle", false);
-            TimeBetween = Config.GetFloat("lights_multipleblackout_timebetween", 5f);
-            BlackoutMaxDurations = Config.GetFloat("lights_multipleblackout_duration_max", 8f);
-            BlackoutMinDurations = Config.GetFloat("lights_multipleblackout_duration_min", 5f);
+            TimeBetweenMin = Config.GetFloat("lights_multipleblackout_timebetween_min", 20f);
+            TimeBetweenMax = Config.GetFloat("lights_multipleblackout_timebetween_max", 35f);
+            BlackoutMaxDuration = Config.GetFloat("lights_multipleblackout_duration_max", 25f);
+            BlackoutMinDuration = Config.GetFloat("lights_multipleblackout_duration_min", 21f);
+            maxAmount = Config.GetInt("lights_multipleblackout_maxamount", 2);
 
             // Command
             CmdName = Config.GetString("lights_command", "lights");
@@ -129,6 +132,6 @@ namespace Lights {
             #endregion
         }
 
-        public override string getName { get; } = "LightsPlugin 1.3 - SebasCapo";
+        public override string getName { get; } = "LightsPlugin 1.3.3 - SebasCapo";
     }
 }
