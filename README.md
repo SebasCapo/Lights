@@ -23,7 +23,7 @@ Reload: "Reload plugin's variables inside 7777-config.yml. (The other two had pa
 These are the variables that should be added to your 7777-config.yml. Or simply download/copy the [config-file example](https://github.com/SebasCapo/Lights/blob/master/LightsPlugin/Example/7777-config.yml)
 | Variable  | Description | Default value |
 | ------------- | ------------- | ------------- |
-| lights_command | Changes the main command. ("lights_reload" stays unchanged to avoid problems) | `light` |
+| lights_command | Changes the main command. ("lightsconfig" stays unchanged to avoid problems) | `light` |
 | lights_alias | Changes the main command's alias | `ls` |
 | lights_true_arguments | All different arguments that are accepted as "true". **(Don't use spaces!)** | `true,t,yes,y` |
 | lights_announce | Whether or not to broadcast a message when lights go spooky | `true` |
