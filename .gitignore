@@ -3,3 +3,7 @@
 ################################################################################
 
 /LightsPlugin/.vs/Lights/v16
+/LightsPlugin/LightsPlugin/bin/Debug
+/LightsPlugin/LightsPlugin/obj/Debug
+/LightsPlugin/LightsPlugin/packages.config
+/LightsPlugin/packages/EXILED.2.0.5
