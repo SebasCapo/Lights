@@ -10,7 +10,7 @@ namespace Lights {
         public override string Prefix => "lights";
         public override string Name => "Lights";
         public override string Author => "Beryl";
-        public override Version Version { get; } = new Version(2, 0);
+        public override Version Version { get; } = new Version(2, 1);
         public override Version RequiredExiledVersion { get; } = new Version(2, 0, 0);
         public EventHandlers handlers;
 
@@ -29,11 +29,13 @@ namespace Lights {
         public void RegisterEvents() {
             Server.RoundStarted += handlers.OnRoundStart;
             Server.RoundEnded += handlers.OnRoundEnd;
+            Player.TriggeringTesla += handlers.TeslaTrigger;
         }
 
         public void UnregisterEvents() {
             Server.RoundStarted -= handlers.OnRoundStart;
             Server.RoundEnded -= handlers.OnRoundEnd;
+            Player.TriggeringTesla -= handlers.TeslaTrigger;
         }
 
     }

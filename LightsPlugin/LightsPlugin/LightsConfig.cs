@@ -24,6 +24,9 @@ namespace Lights {
         [Description("Should the lights be turned off automatically.")]
         public bool DoAutomaticBlackout { get; set; } = true;
 
+        [Description("Should teslas be disabled during a blackout.")]
+        public bool DisableTeslas { get; set; } = true;
+
         [Description("How many seconds should this wait before shutting off the lights for the first time.")]
         public float startTimerMin { get; set; } = 30f;
         public float startTimerMax { get; set; } = 45f;

@@ -9,8 +9,9 @@ using MEC;
 namespace Lights {
 
     public class EventHandlers {
-        public CoroutineHandle automaticHandler;
+        public CoroutineHandle automaticHandler, teslaDisabler;
         public Plugin plugin;
+        bool TeslasDisabled;
         public int count;
         LightsConfig Config;
 
@@ -20,6 +21,8 @@ namespace Lights {
         }
 
         public void OnRoundStart() {
+            TeslasDisabled = false;
+
             if(Config.DoAutomaticBlackout) {
                 if(Config.doMultipleBlackouts)
                     automaticHandler = Timing.RunCoroutine(MultipleBlackouts());
@@ -29,6 +32,14 @@ namespace Lights {
 
         public void OnRoundEnd(RoundEndedEventArgs ev) {
             Timing.KillCoroutines(automaticHandler);
+            Timing.KillCoroutines(teslaDisabler);
+        }
+
+        public void OnDetonate() => Timing.KillCoroutines(automaticHandler);
+
+        public void TeslaTrigger(TriggeringTeslaEventArgs ev) {
+            if(TeslasDisabled)
+                ev.IsTriggerable = false;
         }
 
         #region Commands
@@ -85,16 +96,24 @@ namespace Lights {
         }
 
         public void TurnOffLights(float duration, bool HczOnly) {
+            if(plugin.Config.DisableTeslas) {
+                Timing.KillCoroutines(teslaDisabler);
+
+                TeslasDisabled = true;
+
+                teslaDisabler = Timing.CallDelayed(duration, () => TeslasDisabled = false);
+            }
+
             if(Config.DoBroadcastMessage) {
-                string msg = HczOnly ? Config.broadcastMessageHczOnly : Config.broadcastMessageBoth;
                 ushort dur = HczOnly ? Config.broadcastMessageHczOnlyDuration : Config.broadcastMessageBothDuration;
+                string msg = HczOnly ? Config.broadcastMessageHczOnly.Replace("%ss", $"{duration}") : Config.broadcastMessageBoth.Replace("%ss", $"{duration}");
                 if(Config.ClearBroadcasts)
                     Map.ClearBroadcasts();
                 Map.Broadcast(dur, msg);
             }
 
             if(Config.DoCassieMessages) {
-                string msg = HczOnly ? Config.cassieMessageHczOnly : Config.cassieMessageBoth;
+                string msg = HczOnly ? Config.cassieMessageHczOnly.Replace("%ss", $"{duration}") : Config.cassieMessageBoth.Replace("%ss", $"{duration}");
                 Cassie.Message(msg, Config.MakeHold, Config.MakeNoise);
             }
 
