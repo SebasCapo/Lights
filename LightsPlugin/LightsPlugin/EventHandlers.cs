@@ -9,19 +9,28 @@ using MEC;
 namespace Lights {
 
     public class EventHandlers {
-        public CoroutineHandle automaticHandler, teslaDisabler;
+        public CoroutineHandle automaticHandler, lightsBack;
         public Plugin plugin;
         bool TeslasDisabled;
         public int count;
         LightsConfig Config;
+        Door[] doorsToChange;
+        Dictionary<Door, bool> doorsToRestore;
 
         public EventHandlers( Plugin plugin ) {
             this.plugin = plugin;
             Config = plugin.Config;
+            doorsToRestore = new Dictionary<Door, bool>();
         }
 
         public void OnRoundStart() {
             TeslasDisabled = false;
+
+            if(plugin.Config.ModifyDoors) {
+                doorsToChange = Map.Doors.Where(d =>
+                plugin.Config.OpenableDoors.Contains(d.doorType)
+                && !plugin.Config.BlacklistedDoors.Any(d.DoorName.Contains)).ToArray();
+            }
 
             if(Config.DoAutomaticBlackout) {
                 if(Config.doMultipleBlackouts)
@@ -32,7 +41,7 @@ namespace Lights {
 
         public void OnRoundEnd(RoundEndedEventArgs ev) {
             Timing.KillCoroutines(automaticHandler);
-            Timing.KillCoroutines(teslaDisabler);
+            Timing.KillCoroutines(lightsBack);
         }
 
         public void OnDetonate() => Timing.KillCoroutines(automaticHandler);
@@ -97,11 +106,32 @@ namespace Lights {
 
         public void TurnOffLights(float duration, bool HczOnly) {
             if(plugin.Config.DisableTeslas) {
-                Timing.KillCoroutines(teslaDisabler);
+                Timing.KillCoroutines(lightsBack);
 
                 TeslasDisabled = true;
 
-                teslaDisabler = Timing.CallDelayed(duration, () => TeslasDisabled = false);
+                if(plugin.Config.ModifyDoors) {
+                    if(!doorsToRestore.IsEmpty())
+                        doorsToRestore.Clear();
+
+                    foreach(Door d in doorsToChange) {
+                        if(!Warhead.IsInProgress && !d.Networkdestroyed && !d.Networklocked) {
+                            if(plugin.Config.RestoreDoors)
+                                doorsToRestore.Add(d, d.NetworkisOpen);
+                            d.SetState(!d.NetworkisOpen);
+                        }
+                    }
+                }
+
+                lightsBack = Timing.CallDelayed(duration, () => {
+                    TeslasDisabled = false;    
+
+                    if(plugin.Config.ModifyDoors && plugin.Config.RestoreDoors) {
+                        foreach(KeyValuePair<Door, bool> pair in doorsToRestore)
+                            pair.Key.SetState(pair.Value);
+                    }
+                });
+
             }
 
             if(Config.DoBroadcastMessage) {
