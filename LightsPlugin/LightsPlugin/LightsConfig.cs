@@ -31,7 +31,7 @@ namespace Lights {
         public bool ModifyDoors { get; set; } = false;
         [Description("Should the doors go back to their original state when lights come back? (This may cause issues to your server performance, clients won't be affected by this)")]
         public bool RestoreDoors { get; set; } = true;
-        [Description("Types of Door that can be open during blackout. (Types: Standard, HeavyGate & Checkpoint)")]
+        [Description("Types of Door that can be open by the blackout. (Types: Standard, HeavyGate & Checkpoint)")]
         public List<Door.DoorTypes> OpenableDoors { get; set; } = new List<Door.DoorTypes> {
             Door.DoorTypes.Checkpoint, Door.DoorTypes.HeavyGate, Door.DoorTypes.Standard
         };

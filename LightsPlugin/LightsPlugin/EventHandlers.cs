@@ -10,16 +10,17 @@ namespace Lights {
 
     public class EventHandlers {
         public CoroutineHandle automaticHandler, lightsBack;
-        public Plugin plugin;
-        bool TeslasDisabled;
-        public int count;
-        LightsConfig Config;
-        Door[] doorsToChange;
         Dictionary<Door, bool> doorsToRestore;
+        public Plugin plugin;
+        Door[] doorsToChange;
+        bool TeslasDisabled;
+        LightsConfig Config;
+        public int count;
 
         public EventHandlers( Plugin plugin ) {
             this.plugin = plugin;
             Config = plugin.Config;
+
             doorsToRestore = new Dictionary<Door, bool>();
         }
 
@@ -28,8 +29,8 @@ namespace Lights {
 
             if(plugin.Config.ModifyDoors) {
                 doorsToChange = Map.Doors.Where(d =>
-                plugin.Config.OpenableDoors.Contains(d.doorType)
-                && !plugin.Config.BlacklistedDoors.Any(d.DoorName.Contains)).ToArray();
+                Config.OpenableDoors.Contains(d.doorType)
+                && !Config.BlacklistedDoors.Any(d.DoorName.Contains)).ToArray();
             }
 
             if(Config.DoAutomaticBlackout) {
@@ -110,13 +111,13 @@ namespace Lights {
 
                 TeslasDisabled = true;
 
-                if(plugin.Config.ModifyDoors) {
+                if(Config.ModifyDoors) {
                     if(!doorsToRestore.IsEmpty())
                         doorsToRestore.Clear();
 
                     foreach(Door d in doorsToChange) {
                         if(!Warhead.IsInProgress && !d.Networkdestroyed && !d.Networklocked) {
-                            if(plugin.Config.RestoreDoors)
+                            if(Config.RestoreDoors)
                                 doorsToRestore.Add(d, d.NetworkisOpen);
                             d.SetState(!d.NetworkisOpen);
                         }
@@ -126,7 +127,7 @@ namespace Lights {
                 lightsBack = Timing.CallDelayed(duration, () => {
                     TeslasDisabled = false;    
 
-                    if(plugin.Config.ModifyDoors && plugin.Config.RestoreDoors) {
+                    if(Config.ModifyDoors && Config.RestoreDoors) {
                         foreach(KeyValuePair<Door, bool> pair in doorsToRestore)
                             pair.Key.SetState(pair.Value);
                     }
