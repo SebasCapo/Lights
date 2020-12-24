@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
@@ -87,25 +88,25 @@ namespace Lights {
         #endregion
 
         public IEnumerator<float> MultipleBlackouts() {
-            yield return Timing.WaitForSeconds(UnityEngine.Random.Range(Config.startTimerMin, Config.startTimerMax));
+            yield return Timing.WaitForSeconds(UnityEngine.Random.Range(Config.StartTimerMin, Config.StartTimerMax));
             while(Config.doMultipleBlackouts && Round.IsStarted) {
-                float duration = UnityEngine.Random.Range(Config.blackoutDurationMin, Config.blackoutDurationMax);
-                bool HczOnly = UnityEngine.Random.Range(1, 101) <= Config.hczOnlyChance;
+                float duration = UnityEngine.Random.Range(Config.BlackoutDurationMin, Config.BlackoutDurationMax);
+                bool HczOnly = UnityEngine.Random.Range(1, 101) <= Config.HczOnlyChance;
                 TurnOffLights(duration, HczOnly);
 
-                float timeBetween = Config.addDuration ? UnityEngine.Random.Range(Config.timeBetweenMin, Config.timeBetweenMax) + duration : UnityEngine.Random.Range(Config.timeBetweenMin, Config.timeBetweenMax);
+                float timeBetween = Config.AddDuration ? UnityEngine.Random.Range(Config.TimeBetweenMin, Config.TimeBetweenMax) + duration : UnityEngine.Random.Range(Config.TimeBetweenMin, Config.TimeBetweenMax);
                 yield return Timing.WaitForSeconds(timeBetween);
             }
         }
 
         public IEnumerator<float> SingleBlackout() {
-            yield return Timing.WaitForSeconds(UnityEngine.Random.Range(Config.startTimerMin, Config.startTimerMax));
-            float duration = UnityEngine.Random.Range(Config.blackoutDurationMin, Config.blackoutDurationMax);
-            bool HczOnly = UnityEngine.Random.Range(1, 101) <= Config.hczOnlyChance;
+            yield return Timing.WaitForSeconds(UnityEngine.Random.Range(Config.StartTimerMin, Config.StartTimerMax));
+            float duration = UnityEngine.Random.Range(Config.BlackoutDurationMin, Config.BlackoutDurationMax);
+            bool HczOnly = UnityEngine.Random.Range(1, 101) <= Config.HczOnlyChance;
             TurnOffLights(duration, HczOnly);
         }
 
-        public void TurnOffLights(float duration, bool HczOnly) {
+        public void TurnOffLights(float duration, bool hczOnly) {
             if(plugin.Config.DisableTeslas) {
                 Timing.KillCoroutines(lightsBack);
 
@@ -136,19 +137,28 @@ namespace Lights {
             }
 
             if(Config.DoBroadcastMessage) {
-                ushort dur = HczOnly ? Config.broadcastMessageHczOnlyDuration : Config.broadcastMessageBothDuration;
-                string msg = HczOnly ? Config.broadcastMessageHczOnly.Replace("%ss", $"{duration}") : Config.broadcastMessageBoth.Replace("%ss", $"{duration}");
+                ushort dur = hczOnly ? Config.BroadcastMessageHczOnlyDuration : Config.BroadcastMessageBothDuration;
+                string msg = hczOnly ? Config.BroadcastMessageHczOnly.Replace("%ss", $"{duration}") : Config.BroadcastMessageBoth.Replace("%ss", $"{duration}");
                 if(Config.ClearBroadcasts)
                     Map.ClearBroadcasts();
                 Map.Broadcast(dur, msg);
             }
 
             if(Config.DoCassieMessages) {
-                string msg = HczOnly ? Config.cassieMessageHczOnly.Replace("%ss", $"{duration}") : Config.cassieMessageBoth.Replace("%ss", $"{duration}");
+                string msg = hczOnly ? Config.CassieMessageHczOnly.Replace("%ss", $"{duration}") : Config.CassieMessageBoth.Replace("%ss", $"{duration}");
                 Cassie.Message(msg, Config.MakeHold, Config.MakeNoise);
             }
 
-            Map.TurnOffAllLights(duration, HczOnly);
+
+
+            foreach(Room r in Map.Rooms) {
+                if(hczOnly && r.Zone == ZoneType.HeavyContainment)
+                r.TurnOffLights(duration);
+            }
+        }
+
+        private bool ToggleLights(float duration, bool hczOnly) {
+
         }
     }
 }

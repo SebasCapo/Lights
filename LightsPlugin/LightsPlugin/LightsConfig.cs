@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Exiled.API.Enums;
 using Exiled.API.Interfaces;
 
 namespace Lights {
@@ -41,25 +42,57 @@ namespace Lights {
         };
 
         [Description("How many seconds should this wait before shutting off the lights for the first time.")]
-        public float startTimerMin { get; set; } = 30f;
-        public float startTimerMax { get; set; } = 45f;
+        public float StartTimerMin { get; set; } = 30f;
+        public float StartTimerMax { get; set; } = 45f;
 
 
         [Description("Should the lights be turned off automatically repeatedly after the first one.")]
         public bool doMultipleBlackouts { get; set; } = true;
 
         [Description("How many seconds should this wait between each \"blackout\".")]
-        public float timeBetweenMin { get; set; } = 45f;
-        public float timeBetweenMax { get; set; } = 60f;
+        public float TimeBetweenMin { get; set; } = 45f;
+        public float TimeBetweenMax { get; set; } = 60f;
 
         [Description("For how long will the lights be turned off?")]
-        public float blackoutDurationMin { get; set; } = 15f;
-        public float blackoutDurationMax { get; set; } = 20f;
+        public float BlackoutDurationMin { get; set; } = 15f;
+        public float BlackoutDurationMax { get; set; } = 20f;
         [Description("Should the blackout duration be added to the delay between each automatic blackout?")]
-        public bool addDuration { get; set; } = true;
+        public bool AddDuration { get; set; } = true;
 
-        [Description("Chance for the automatic blackout to happen in Heavy Containment Only.")]
-        public int hczOnlyChance { get; set; } = 50;
+        [Description("Should teslas be disabled during a blackout.")]
+        public float LightIntensity { get; set; } = 1;
+
+        [Description("Chance for the automatic blackout to happen on each zone. (Set to 0 to disable)")]
+        public Dictionary<ZoneType, int> ZoneChance { get; set; } = new Dictionary<ZoneType, int>() {
+            {
+                ZoneType.Entrance, 25
+            },
+            {
+                ZoneType.HeavyContainment, 25
+            },
+            {
+                ZoneType.LightContainment, 25
+            },
+            {
+                ZoneType.Surface, 25
+            }
+        };
+
+        [Description("Broadcast displayed when lights are turned off on specified zone. (Leave empty to disable)")]
+        public Dictionary<ZoneType, int> ZoneBroadcast { get; set; } = new Dictionary<ZoneType, int>() {
+            {
+                ZoneType.Entrance, 25
+            },
+            {
+                ZoneType.HeavyContainment, 25
+            },
+            {
+                ZoneType.LightContainment, 25
+            },
+            {
+                ZoneType.Surface, 25
+            }
+        };
 
         #region Broadcasts
         [Description("Should a broadcast be shown when the lights are turned off?")]
@@ -67,13 +100,9 @@ namespace Lights {
         [Description("Should Broadcasts be cleared when this one's shown.")]
         public bool ClearBroadcasts { get; set; } = true;
 
-        [Description("This is the broadcast shown when the lights are turned off in Heavy Containment Zone only. (%ss = blackout duration)")]
-        public string broadcastMessageHczOnly { get; set; } = "<color=aqua>Lights have been turned off for %ss! SpooOOOOoooky!</color>";
-        public ushort broadcastMessageHczOnlyDuration { get; set; } = 5;
-
         [Description("This is the broadcast shown when the lights are turned off in the entire facility. (%ss = blackout duration)")]
-        public string broadcastMessageBoth { get; set; } = "<color=aqua>Lights have been turned off for %ss! SpooOOOOoooky!</color>";
-        public ushort broadcastMessageBothDuration { get; set; } = 5;
+        public string BroadcastMessageBoth { get; set; } = "<color=aqua>Lights have been turned off for %ss! SpooOOOOoooky!</color>";
+        public ushort BroadcastMessageBothDuration { get; set; } = 5;
         #endregion
 
         #region Cassie
@@ -84,9 +113,9 @@ namespace Lights {
         public bool MakeNoise { get; set; } = false;
 
         [Description("This is what Cassie says if the lights are turned off in Heavy Containment Zone only. (%ss = blackout duration)")]
-        public string cassieMessageHczOnly { get; set; } = "heavy containment zone generator .g3 malfunction detected .g4 .g3 .g3 .g4";
+        public string CassieMessageHczOnly { get; set; } = "heavy containment zone generator .g3 malfunction detected .g4 .g3 .g3 .g4";
         [Description("This is what Cassie says if the lights are turned off in the entire facility. (%ss = blackout duration)")]
-        public string cassieMessageBoth { get; set; } = "generator .g3 malfunction detected .g4 .g3 .g3 .g4";
+        public string CassieMessageBoth { get; set; } = "generator .g3 malfunction detected .g4 .g3 .g3 .g4";
         #endregion
 
     }
