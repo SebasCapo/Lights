@@ -31,13 +31,9 @@ namespace Lights {
         public bool ModifyDoors { get; set; } = false;
         [Description("Should the doors go back to their original state when lights come back? (This may cause issues to your server performance, clients won't be affected by this)")]
         public bool RestoreDoors { get; set; } = true;
-        [Description("Types of Door that can be open by the blackout. (Types: Standard, HeavyGate & Checkpoint)")]
-        public List<Door.DoorTypes> OpenableDoors { get; set; } = new List<Door.DoorTypes> {
-            Door.DoorTypes.Checkpoint, Door.DoorTypes.HeavyGate, Door.DoorTypes.Standard
-        };
         [Description("Doors that have the following strings in their name will be ignored. (This and the previous configs will be ignored if 'OpenDoors' is set to 'false')")]
         public List<string> BlacklistedDoors { get; set; } = new List<string> {
-            "106", "173"
+            "106_BOTTOM", "173_CONNECTOR"
         };
 
         [Description("How many seconds should this wait before shutting off the lights for the first time.")]

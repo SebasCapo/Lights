@@ -23,6 +23,7 @@ namespace Lights {
 
         public override void OnDisabled() {
 
+            Server.SendingRemoteAdminCommand -= handlers.OnCommand;
             UnregisterEvents();
         }
 

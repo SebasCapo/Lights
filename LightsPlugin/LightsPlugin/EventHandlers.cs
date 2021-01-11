@@ -4,15 +4,16 @@ using System.Linq;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Exiled.Permissions.Extensions;
+using Interactables.Interobjects.DoorUtils;
 using MEC;
 
 namespace Lights {
 
     public class EventHandlers {
         public CoroutineHandle automaticHandler, lightsBack;
-        Dictionary<Door, bool> doorsToRestore;
+        Dictionary<DoorVariant, bool> doorsToRestore;
         public Plugin plugin;
-        Door[] doorsToChange;
+        DoorVariant[] doorsToChange;
         bool TeslasDisabled;
         LightsConfig Config;
         public int count;
@@ -21,16 +22,14 @@ namespace Lights {
             this.plugin = plugin;
             Config = plugin.Config;
 
-            doorsToRestore = new Dictionary<Door, bool>();
+            doorsToRestore = new Dictionary<DoorVariant, bool>();
         }
 
         public void OnRoundStart() {
             TeslasDisabled = false;
 
             if(plugin.Config.ModifyDoors) {
-                doorsToChange = Map.Doors.Where(d =>
-                Config.OpenableDoors.Contains(d.doorType)
-                && !Config.BlacklistedDoors.Any(d.DoorName.Contains)).ToArray();
+                doorsToChange = Map.Doors.Where(d => !Config.BlacklistedDoors.Any(s => d == Map.GetDoorByName(s))).ToArray();
             }
 
             if(Config.DoAutomaticBlackout) {
@@ -115,11 +114,11 @@ namespace Lights {
                     if(!doorsToRestore.IsEmpty())
                         doorsToRestore.Clear();
 
-                    foreach(Door d in doorsToChange) {
-                        if(!Warhead.IsInProgress && !d.Networkdestroyed && !d.Networklocked) {
+                    foreach(var d in doorsToChange) {
+                        if(!Warhead.IsInProgress && d.NetworkActiveLocks == 0) {
                             if(Config.RestoreDoors)
-                                doorsToRestore.Add(d, d.NetworkisOpen);
-                            d.SetState(!d.NetworkisOpen);
+                                doorsToRestore.Add(d, d.IsConsideredOpen());
+                            d.NetworkTargetState = !d.IsConsideredOpen();
                         }
                     }
                 }
@@ -128,8 +127,8 @@ namespace Lights {
                     TeslasDisabled = false;    
 
                     if(Config.ModifyDoors && Config.RestoreDoors) {
-                        foreach(KeyValuePair<Door, bool> pair in doorsToRestore)
-                            pair.Key.SetState(pair.Value);
+                        foreach(var pair in doorsToRestore)
+                            pair.Key.NetworkTargetState = (pair.Value);
                     }
                 });
 
