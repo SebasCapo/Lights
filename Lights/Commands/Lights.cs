@@ -14,6 +14,8 @@ namespace Lights.Commands
     /// <summary>
     /// A command to disable lights for a given duration.
     /// </summary>
+    [CommandHandler(typeof(GameConsoleCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Lights : ICommand
     {
         private const string RequiredPermission = "lights.light";
