@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lights", "LightsPlugin\Lights.csproj", "{9280B8BA-6290-4FC8-A58F-BC24E43AA486}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lights", "Lights\Lights.csproj", "{9280B8BA-6290-4FC8-A58F-BC24E43AA486}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

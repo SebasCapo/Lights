@@ -1,11 +1,11 @@
-# Lights 2.0
+# Lights 3.0
 A simple yet EXTREMELY configurable EXILED Plugin that lets you turn the lights off.
 
 ### What does it do?
 This plugin lets you turn off the lights of Light Containment Zone (LCZ) and/or Heavy Containment Zone (HCZ) using a command in the RemoteAdmin console. Overall, pretty simple! (It still needs [EXILED](https://github.com/galaxy119/EXILED "EXILED") to work tho!).
 
 ### Installation
-As with any EXILED plugin, you must place the LightsCommand.dll file inside of your "%appdata%/Roaming/Plugins" folder.
+As with any EXILED plugin, you must place the Lights.dll file inside of your "/Exiled/Plugins" folder.
 
 ### Commands
 Arguments inside &lt;&gt; are required. [] means it's optional.
@@ -23,7 +23,7 @@ Reload: "Reload plugin's variables inside 7777-config.yml. (The other two had pa
 Exiled 2.0 now has auto-generated config files, alongside documentation! So check out your config file for more information on it!
 
 ### Permissions
-These are the permissions that should be added to your permissions.yml inside your "%appdata%/Roaming/Plugins/Exiled Permissions" folder.
+These are the permissions that should be added to your permissions.yml inside your "/Exiled/Configs" folder.
 | Permission  | Command |
 | ------------- | ------------- |
 | lights.light | `lights` |
