@@ -25,13 +25,13 @@ namespace Lights
         /// <param name="hczOnly">Whether the blackout should only occur in <see cref="Exiled.API.Enums.ZoneType.HeavyContainment"/>.</param>
         public void TurnOffLights(float duration, bool hczOnly)
         {
-            if (plugin.Config.DisableTeslas)
+            if (plugin.Config.Blackouts.DisableTeslas)
             {
                 Timing.KillCoroutines(lightsBack);
 
                 teslasDisabled = true;
 
-                if (config.ModifyDoors)
+                if (config.Blackouts.ModifyDoors)
                 {
                     if (!doorsToRestore.IsEmpty())
                         doorsToRestore.Clear();
@@ -40,7 +40,7 @@ namespace Lights
                     {
                         if (!Warhead.IsInProgress && door.NetworkActiveLocks == 0)
                         {
-                            if (config.RestoreDoors)
+                            if (config.Blackouts.RestoreDoors)
                                 doorsToRestore.Add(door, door.IsConsideredOpen());
                             door.NetworkTargetState = !door.IsConsideredOpen();
                         }
@@ -51,7 +51,7 @@ namespace Lights
                 {
                     teslasDisabled = false;
 
-                    if (config.ModifyDoors && config.RestoreDoors)
+                    if (config.Blackouts.ModifyDoors && config.Blackouts.RestoreDoors)
                     {
                         foreach (KeyValuePair<DoorVariant, bool> pair in doorsToRestore)
                             pair.Key.NetworkTargetState = pair.Value;

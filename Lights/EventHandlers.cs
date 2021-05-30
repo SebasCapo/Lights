@@ -44,9 +44,9 @@ namespace Lights
         {
             teslasDisabled = false;
 
-            if (plugin.Config.ModifyDoors)
+            if (plugin.Config.Blackouts.ModifyDoors)
             {
-                doorsToChange = Map.Doors.Where(d => config.BlacklistedDoors.All(s => d != Map.GetDoorByName(s)));
+                doorsToChange = Map.Doors.Where(d => config.Blackouts.BlacklistedDoors.All(s => d != Map.GetDoorByName(s)));
             }
 
             if (config.AutomaticBlackouts.DoAutomaticBlackouts)
