@@ -56,7 +56,7 @@ namespace Lights.Commands
 
             int shortDuration = (int)duration;
             Plugin.EventHandlers.TurnOffLights(duration, hczOnly);
-            response = $"The lights have been turned of for {shortDuration} {(shortDuration == 1 ? "second" : "seconds")} {(hczOnly ? "in heavy containment" : "facility-wide")}.";
+            response = $"The lights have been turned off for {shortDuration} {(shortDuration == 1 ? "second" : "seconds")} {(hczOnly ? "in heavy containment" : "facility-wide")}.";
             return true;
         }
     }

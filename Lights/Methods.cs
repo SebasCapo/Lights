@@ -78,11 +78,7 @@ namespace Lights
                 Cassie.Message(msg, config.Cassie.MakeHold, config.Cassie.MakeNoise);
             }
 
-            foreach (Room r in Map.Rooms)
-            {
-                if (hczOnly && r.Zone == ZoneType.HeavyContainment)
-                    r.TurnOffLights(duration);
-            }
+            Generator079.mainGenerator.ServerOvercharge(duration, hczOnly);
         }
 
         private IEnumerator<float> MultipleBlackouts()
