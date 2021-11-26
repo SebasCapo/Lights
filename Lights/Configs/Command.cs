@@ -7,31 +7,35 @@
 
 namespace Lights.Configs
 {
-    using System.Collections.Generic;
     using System.ComponentModel;
 
     /// <summary>
-    /// Configs relating to the plugin's <see cref="Lights.Commands.Lights"/> command.
+    /// Configs relating to the plugin's <see cref="Commands.Lights"/> command.
     /// </summary>
     public class Command
     {
         /// <summary>
         /// Gets or sets the main command name.
         /// </summary>
-        public string Name { get; set; } = "lights";
+        [Description("The main command's name.")]
+        public string Name { get; set; } = "lightsre";
 
         /// <summary>
         /// Gets or sets all accepted command aliases.
         /// </summary>
-        public string[] Aliases { get; set; } = { "ls" };
+        [Description("The main command's aliases.")]
+        public string[] Aliases { get; set; } = { "lights", "lre", "ls" };
 
         /// <summary>
-        /// Gets or sets a collection of arguments which are to be considered as true for the hczOnly argument in the <see cref="Lights.Commands.Lights"/> command.
+        /// Gets or sets the command description.
         /// </summary>
-        [Description("Which arguments are considered as \"true\" for the third argument in the Light command. (Example: Adding \"yes\" to this list, will make it so using \"ls 15 yes\", turns off lights in HCZ only). By the way, don't use uppercase!")]
-        public List<string> AcceptedArguments { get; set; } = new List<string>
-        {
-            "yes", "y", "true", "t", "hczonly",
-        };
+        [Description("The main command's description.")]
+        public string Description { get; set; } = "Modifies a room/zone's lights depending on your input, or using a pre-made preset!";
+
+        /// <summary>
+        /// Gets or sets the command usage info.
+        /// </summary>
+        [Description("The main command's usage info.")]
+        public string[] Usage { get; set; } = { "PresetID" };
     }
 }

@@ -8,7 +8,9 @@
 namespace Lights
 {
     using System;
+    using System.Collections.Generic;
     using Exiled.API.Features;
+    using MEC;
     using PlayerHandlers = Exiled.Events.Handlers.Player;
     using ServerHandlers = Exiled.Events.Handlers.Server;
 
@@ -33,17 +35,32 @@ namespace Lights
         /// </summary>
         public static EventHandlers EventHandlers { get; private set; }
 
+        /// <summary>
+        /// Gets all coroutines used by this plugin.
+        /// </summary>
+        public static List<CoroutineHandle> Coroutines { get; } = new List<CoroutineHandle>();
+
+        /// <inheritdoc />
+        public override string Name => "LightsRE";
+
+        /// <inheritdoc />
+        public override string Author => "Beryl - (Contributors: BuildBoy12)";
+
         /// <inheritdoc />
         public override string Prefix => "lights";
 
         /// <inheritdoc />
-        public override Version RequiredExiledVersion { get; } = new Version(2, 10, 0);
+        public override Version Version => new Version(4, 0, 0);
+
+        /// <inheritdoc />
+        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
 
         /// <inheritdoc />
         public override void OnEnabled()
         {
             EventHandlers = new EventHandlers(this);
             RegisterEvents();
+
             base.OnEnabled();
         }
 
@@ -52,17 +69,18 @@ namespace Lights
         {
             UnregisterEvents();
             EventHandlers = null;
+
             base.OnDisabled();
         }
 
-        private static void RegisterEvents()
+        private void RegisterEvents()
         {
             ServerHandlers.RoundStarted += EventHandlers.OnRoundStarted;
             ServerHandlers.RoundEnded += EventHandlers.OnRoundEnded;
             PlayerHandlers.TriggeringTesla += EventHandlers.OnTriggeringTesla;
         }
 
-        private static void UnregisterEvents()
+        private void UnregisterEvents()
         {
             ServerHandlers.RoundStarted -= EventHandlers.OnRoundStarted;
             ServerHandlers.RoundEnded -= EventHandlers.OnRoundEnded;

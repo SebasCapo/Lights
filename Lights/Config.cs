@@ -7,6 +7,7 @@
 
 namespace Lights
 {
+    using System.ComponentModel;
     using Exiled.API.Interfaces;
     using Lights.Configs;
 
@@ -14,21 +15,31 @@ namespace Lights
     public class Config : IConfig
     {
         /// <inheritdoc />
+        [Description("Whether this plugin is enabled.")]
         public bool IsEnabled { get; set; } = true;
 
-        /// <inheritdoc cref="Lights.Configs.AutomaticBlackouts"/>
-        public AutomaticBlackouts AutomaticBlackouts { get; set; } = new AutomaticBlackouts();
+        /// <summary>
+        /// Gets or sets a value indicating whether some debug messages will be shown.
+        /// </summary>
+        [Description("Whether some debug messages will be shown.")]
+        public bool Debug { get; set; } = true;
 
-        /// <inheritdoc cref="Lights.Configs.Blackouts"/>
-        public Blackouts Blackouts { get; set; } = new Blackouts();
-
-        /// <inheritdoc cref="Lights.Configs.Broadcasts"/>
-        public Broadcasts Broadcasts { get; set; } = new Broadcasts();
-
-        /// <inheritdoc cref="Lights.Configs.Cassie"/>
-        public Cassie Cassie { get; set; } = new Cassie();
-
-        /// <inheritdoc cref="Lights.Configs.Command"/>
+        /// <inheritdoc cref="Configs.Command"/>
+        [Description("All configuration settings relating this plugin's command(s).")]
         public Command Command { get; set; } = new Command();
+
+        /// <inheritdoc cref="Configs.Cassie"/>
+        [Description("All configuration settings relating Cassie when presets are ran.")]
+        public Cassie Cassie { get; set; } = new Cassie();
+        /*/// <inheritdoc cref="Configs.Broadcasts"/>
+        public Broadcasts Broadcasts { get; set; } = new Broadcasts();*/
+
+        /// <inheritdoc cref="Configs.TeslaGates"/>
+        [Description("All configuration settings relating Tesla Gates during blackouts, lockdowns and other light settings.")]
+        public TeslaGates TeslaGates { get; set; } = new TeslaGates();
+
+        /// <inheritdoc cref="Configs.Presets"/>
+        [Description("This plugin's main feature, presets have fun. :)")]
+        public Presets Presets { get; set; } = new Presets();
     }
 }

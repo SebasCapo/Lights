@@ -8,10 +8,8 @@
 namespace Lights
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Interactables.Interobjects.DoorUtils;
     using MEC;
 
     /// <summary>
@@ -19,13 +17,8 @@ namespace Lights
     /// </summary>
     public partial class EventHandlers
     {
-        private readonly Dictionary<DoorVariant, bool> doorsToRestore;
-        private readonly Plugin plugin;
         private readonly Config config;
-        private CoroutineHandle automaticHandler;
-        private CoroutineHandle lightsBack;
-        private IEnumerable<DoorVariant> doorsToChange;
-        private bool teslasDisabled;
+        private int presetIndex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventHandlers"/> class.
@@ -33,43 +26,85 @@ namespace Lights
         /// <param name="plugin">An instance of the <see cref="Plugin"/> class.</param>
         public EventHandlers(Plugin plugin)
         {
-            this.plugin = plugin;
             config = plugin.Config;
 
-            doorsToRestore = new Dictionary<DoorVariant, bool>();
+            DisabledTeslas = new List<int>();
         }
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing the <see cref="UnityEngine.Object.GetInstanceID()">Instance IDs</see> of all rooms
+        /// whose lights were affected (Depending on config settings), teslas in these rooms won't trigger.
+        /// </summary>
+        public List<int> DisabledTeslas { get; private set; }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
-        public void OnRoundStarted()
-        {
-            teslasDisabled = false;
+        public void OnRoundStarted() => Plugin.Coroutines.Add(Timing.RunCoroutine(RunBlackouts()));
 
-            if (plugin.Config.Blackouts.ModifyDoors)
-            {
-                doorsToChange = Map.Doors.Where(d => config.Blackouts.BlacklistedDoors.All(s => d != Map.GetDoorByName(s)));
-            }
-
-            if (config.AutomaticBlackouts.DoAutomaticBlackouts)
-            {
-                if (config.AutomaticBlackouts.DoMultipleBlackouts)
-                    automaticHandler = Timing.RunCoroutine(MultipleBlackouts());
-                else
-                    automaticHandler = Timing.RunCoroutine(SingleBlackout());
-            }
-        }
-
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundEnded(RoundEndedEventArgs)"/>
-        public void OnRoundEnded(RoundEndedEventArgs ev)
+        public void OnRoundEnded(RoundEndedEventArgs _)
+#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
         {
-            Timing.KillCoroutines(automaticHandler);
-            Timing.KillCoroutines(lightsBack);
+            foreach (var item in Plugin.Coroutines)
+            {
+                Timing.KillCoroutines(item);
+            }
+
+            Plugin.Coroutines.Clear();
+            DisabledTeslas.Clear();
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnTriggeringTesla(TriggeringTeslaEventArgs)"/>
         public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
         {
-            if (teslasDisabled)
+            var room = ev.Player.CurrentRoom;
+
+            if (room == null)
+                return;
+
+            if (config.TeslaGates.SmartGates)
+            {
+                var r = room.Color.r < Plugin.Instance.Config.TeslaGates.ColorSettings.R;
+                var g = room.Color.g < Plugin.Instance.Config.TeslaGates.ColorSettings.G;
+                var b = room.Color.b < Plugin.Instance.Config.TeslaGates.ColorSettings.B;
+                var belowColorMinimum = Plugin.Instance.Config.TeslaGates.ColorSettings.RequireAllMinimums ? r && g && b : r || g || b;
+
+                if (room.LightsOff || belowColorMinimum || room.LightIntensity < Plugin.Instance.Config.TeslaGates.IntensityMinimum)
+                    ev.IsTriggerable = false;
+
+                return;
+            }
+
+            if (DisabledTeslas.Contains(room.GetInstanceID()))
                 ev.IsTriggerable = false;
+        }
+
+        private IEnumerator<float> RunBlackouts()
+        {
+            for (int i = 0; i < config.Presets.LoopCount; i++)
+            {
+                string id;
+                if (config.Presets.RandomOrder)
+                {
+                    id = config.Presets.Order[UnityEngine.Random.Range(0, config.Presets.Order.Length)];
+                }
+                else
+                {
+                    id = config.Presets.Order[presetIndex++];
+
+                    if (presetIndex >= config.Presets.Order.Length)
+                        presetIndex = 0;
+                }
+
+                if (config.Presets.PerZone.TryTriggerPreset(id))
+                    Log.Debug($"Automatically ran zone preset: \"{id}\"", config.Debug);
+                else if (config.Presets.PerRoom.TryTriggerPreset(id))
+                    Log.Debug($"Automatically ran room preset: \"{id}\"", config.Debug);
+                else
+                    Log.Error($"Couldn't find any presets with ID \"{id}\", make sure there's no typos.");
+
+                yield return Timing.WaitForSeconds(UnityEngine.Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
+            }
         }
     }
 }

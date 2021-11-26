@@ -7,7 +7,9 @@
 
 namespace Lights.Configs
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using Exiled.API.Enums;
 
     /// <summary>
     /// Configs relating to how cassie should be handled during a blackout.
@@ -15,9 +17,9 @@ namespace Lights.Configs
     public class Cassie
     {
         /// <summary>
-        /// Gets or sets a value indicating whether Cassie should announce when the lights are turned off.
+        /// Gets or sets a value indicating whether Cassie should announce when the lights are affected.
         /// </summary>
-        [Description("Indicates whether Cassie should announce when the lights are turned off.")]
+        [Description("Indicates whether Cassie should announce when the lights are affected.")]
         public bool DoCassieMessages { get; set; } = true;
 
         /// <summary>
@@ -33,15 +35,13 @@ namespace Lights.Configs
         public bool MakeNoise { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets what cassie says if the lights are only turned off in <see cref="Exiled.API.Enums.ZoneType.HeavyContainment"/>.
+        /// Gets or sets what cassie says when a preset is used.
         /// </summary>
-        [Description("What Cassie says if the lights are only turned off in Heavy Containment Zone. (%ss = blackout duration)")]
-        public string HczOnly { get; set; } = "heavy containment zone generator .g3 malfunction detected .g4 .g3 .g3 .g4";
-
-        /// <summary>
-        /// Gets or sets what cassie says if the lights are turned off in the entire facility.
-        /// </summary>
-        [Description("What Cassie says if the lights are turned off in the entire facility. (%ss = blackout duration)")]
-        public string Both { get; set; } = "generator .g3 malfunction detected .g4 .g3 .g3 .g4";
+        [Description("What Cassie says depending on which preset was used. (%ss = effect duration)")]
+        public Dictionary<string, string> Messages { get; set; } = new Dictionary<string, string>()
+        {
+            { "myZonePreset1", "generator .g3 malfunction detected .g4 .g3 .g3 .g4" },
+            { "myZonePreset2", "heavy containment zone generator .g3 malfunction detected .g4 .g3 .g3 .g4" },
+        };
     }
 }
