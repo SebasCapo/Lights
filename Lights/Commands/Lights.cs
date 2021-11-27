@@ -20,8 +20,6 @@ namespace Lights.Commands
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Lights : ICommand, IUsageProvider
     {
-        private const string RequiredPermission = "lights.light";
-
         /// <inheritdoc />
         public string Command { get; } = Plugin.Instance.Config.Command.Name;
 
@@ -37,27 +35,29 @@ namespace Lights.Commands
         /// <inheritdoc />
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission(RequiredPermission))
-            {
-                response = $"Insufficient permission. Required: {RequiredPermission}";
-                return false;
-            }
-
             if (arguments.Count == 0)
             {
                 response = HelpMessage();
                 return false;
             }
 
-            if (Plugin.Instance.Config.Presets.PerZone.TryTriggerPreset(arguments.At(0)))
+            if (sender.CheckPermission("lights.presets"))
             {
-                response = $"Used preset \"{arguments.At(0)}\" successfully.";
-                return true;
+                if (Plugin.Instance.Config.Presets.PerZone.TryTriggerPreset(arguments.At(0)))
+                {
+                    response = $"Used preset \"{arguments.At(0)}\" successfully.";
+                    return true;
+                }
+                else if (Plugin.Instance.Config.Presets.PerRoom.TryTriggerPreset(arguments.At(0)))
+                {
+                    response = $"Used preset \"{arguments.At(0)}\" successfully.";
+                    return true;
+                }
             }
-            else if (Plugin.Instance.Config.Presets.PerRoom.TryTriggerPreset(arguments.At(0)))
+            else if (!sender.CheckPermission("lights.custom"))
             {
-                response = $"Used preset \"{arguments.At(0)}\" successfully.";
-                return true;
+                response = "Insufficient permission. Required: lights.custom";
+                return false;
             }
 
             // Command layout, for testing purposes.

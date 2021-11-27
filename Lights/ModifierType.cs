@@ -13,7 +13,7 @@ namespace Lights
     public enum ModifierType
     {
         /// <summary>
-        /// Will modify a light intensity in a room.
+        /// Will modify light's intensity in a room.
         /// </summary>
         Intensity,
 
