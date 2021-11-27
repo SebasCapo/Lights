@@ -81,6 +81,9 @@ namespace Lights
 
         private IEnumerator<float> RunBlackouts()
         {
+            if (!config.Presets.AreEnabled)
+                yield break;
+
             for (int i = 0; i < config.Presets.LoopCount; i++)
             {
                 string id;

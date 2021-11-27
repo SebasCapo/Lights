@@ -17,6 +17,12 @@ namespace Lights.Configs
     public class Presets
     {
         /// <summary>
+        /// Gets or sets a value indicating whether presets will be able to be executed.
+        /// </summary>
+        [Description("Whether presets system is enabled.")]
+        public bool AreEnabled { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets a value indicating whether presets will be ran in random order.
         /// </summary>
         [Description("Whether presets will be ran in random order.")]
