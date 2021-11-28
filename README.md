@@ -43,10 +43,12 @@ Exiled 2.0 or above has auto-generated config files, alongside documentation! So
 ### Permissions
 These are the permissions that should be added to your permissions.yml inside your "/Exiled/Configs" folder.
 | Permission  | Description |
-| ------------- | ------------- |
-| lights.presets | Gives access to the `lights <PresetID>` command |
-| lights.custom | Gives access to the `lights <roomType/zoneType> <duration> etcetc...` command |
-| lights.* | Gives all the permissions above. | 
+| ---------------- | -------- |
+| ``lights.custom`` | Gives access to the `lights <roomType/zoneType> <duration> etcetc...` command. |
+| ``lights.presets`` | Gives access to the `lights <PresetID>` command. |
+| ``lights.presets.<id>`` | Gives access to a specific preset. This won't work if SpecificPermissionsRequired is set to false! |
+| ``lights.presets.*`` | Gives access to all presets. | 
+| ``lights.*`` | Gives all the permissions above. | 
 
 ### That'd be all
 Thank you for passing by, have a nice day! :)
