@@ -47,7 +47,7 @@ namespace Lights.Commands
 
                 if (Plugin.Instance.Config.Presets.PerZone.TryTriggerPreset(arguments.At(0)))
                 {
-                    if (!sender.CheckPermission(permission))
+                    if (Plugin.Instance.Config.Presets.SpecificPermissionsRequired && !sender.CheckPermission(permission))
                     {
                         response = $"Insufficient permission. Required: {permission}";
                         return false;
@@ -58,7 +58,7 @@ namespace Lights.Commands
                 }
                 else if (Plugin.Instance.Config.Presets.PerRoom.TryTriggerPreset(arguments.At(0)))
                 {
-                    if (!sender.CheckPermission(permission))
+                    if (Plugin.Instance.Config.Presets.SpecificPermissionsRequired && !sender.CheckPermission(permission))
                     {
                         response = $"Insufficient permission. Required: {permission}";
                         return false;
