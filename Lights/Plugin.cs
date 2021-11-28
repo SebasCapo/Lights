@@ -50,7 +50,7 @@ namespace Lights
         public override string Prefix => "lights";
 
         /// <inheritdoc />
-        public override Version Version => new Version(4, 0, 0);
+        public override Version Version => new Version(4, 0, 1);
 
         /// <inheritdoc />
         public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);

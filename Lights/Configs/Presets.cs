@@ -29,10 +29,22 @@ namespace Lights.Configs
         public bool RandomOrder { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether running presets through a command requires a specific permission for it.
+        /// </summary>
+        [Description("Whether running presets through a command requires a specific permission for it")]
+        public bool SpecificPermissionsRequired { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets how many times this plugin will loop through the preset order.
         /// </summary>
         [Description("How many times this plugin will loop through the preset order.")]
         public uint LoopCount { get; set; } = 5;
+
+        /// <summary>
+        /// Gets or sets the minimum amount of time until presets begin getting looped through.
+        /// </summary>
+        [Description("The delay until the plugin begins going through the presets.")]
+        public float InitialDelay { get; set; } = 32;
 
         /// <summary>
         /// Gets or sets the minimum amount of time that will pass until next preset is ran.

@@ -84,6 +84,8 @@ namespace Lights
             if (!config.Presets.AreEnabled)
                 yield break;
 
+            yield return Timing.WaitForSeconds(config.Presets.InitialDelay);
+
             for (int i = 0; i < config.Presets.LoopCount; i++)
             {
                 string id;

@@ -43,13 +43,27 @@ namespace Lights.Commands
 
             if (sender.CheckPermission("lights.presets"))
             {
+                string permission = $"lights.presets.{arguments.At(0).ToLower()}";
+
                 if (Plugin.Instance.Config.Presets.PerZone.TryTriggerPreset(arguments.At(0)))
                 {
+                    if (!sender.CheckPermission(permission))
+                    {
+                        response = $"Insufficient permission. Required: {permission}";
+                        return false;
+                    }
+
                     response = $"Used preset \"{arguments.At(0)}\" successfully.";
                     return true;
                 }
                 else if (Plugin.Instance.Config.Presets.PerRoom.TryTriggerPreset(arguments.At(0)))
                 {
+                    if (!sender.CheckPermission(permission))
+                    {
+                        response = $"Insufficient permission. Required: {permission}";
+                        return false;
+                    }
+
                     response = $"Used preset \"{arguments.At(0)}\" successfully.";
                     return true;
                 }
@@ -63,7 +77,7 @@ namespace Lights.Commands
             // Command layout, for testing purposes.
             // -1          0      1   2   3  4   5
             // /lights Room/Zone 12 Color 5 255 255
-            if (arguments.Count > 1 && Enum.TryParse(arguments.At(2), true, out ModifierType modifierType))
+            if (arguments.Count > 2 && Enum.TryParse(arguments.At(2), true, out ModifierType modifierType))
             {
                 var rgb = new float[] { 0.75f, 255, 255 };
                 var duration = 15f;
