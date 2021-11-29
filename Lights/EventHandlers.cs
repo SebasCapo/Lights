@@ -86,6 +86,29 @@ namespace Lights
 
             yield return Timing.WaitForSeconds(config.Presets.InitialDelay);
 
+            if (!config.Presets.InitialPreset.IsEmpty())
+            {
+                var id = config.Presets.InitialPreset[UnityEngine.Random.Range(0, config.Presets.InitialPreset.Length)];
+
+                if (!string.IsNullOrEmpty(id) && !id.StartsWith("!"))
+                {
+                    if (config.Presets.PerZone.TryTriggerPreset(id))
+                    {
+                        Log.Debug($"Automatically ran initial zone preset: \"{id}\"", config.Debug);
+                        yield return Timing.WaitForSeconds(UnityEngine.Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
+                    }
+                    else if (config.Presets.PerRoom.TryTriggerPreset(id))
+                    {
+                        Log.Debug($"Automatically ran initial room preset: \"{id}\"", config.Debug);
+                        yield return Timing.WaitForSeconds(UnityEngine.Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
+                    }
+                    else
+                    {
+                        Log.Error($"Couldn't find any presets with ID \"{id}\", make sure there's no typos.");
+                    }
+                }
+            }
+
             for (int i = 0; i < config.Presets.LoopCount; i++)
             {
                 string id;

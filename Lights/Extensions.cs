@@ -89,7 +89,7 @@ namespace Lights
                     {
                         Plugin.Coroutines.Add(Timing.CallDelayed(duration, () =>
                         {
-                            room.Color = color;
+                            room.ResetColor();
                             Plugin.EventHandlers.DisabledTeslas.Remove(id);
                         }));
                     }

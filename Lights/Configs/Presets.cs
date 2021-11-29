@@ -41,12 +41,6 @@ namespace Lights.Configs
         public uint LoopCount { get; set; } = 5;
 
         /// <summary>
-        /// Gets or sets the minimum amount of time until presets begin getting looped through.
-        /// </summary>
-        [Description("The delay until the plugin begins going through the presets.")]
-        public float InitialDelay { get; set; } = 32;
-
-        /// <summary>
         /// Gets or sets the minimum amount of time that will pass until next preset is ran.
         /// </summary>
         [Description("The minimum amount of time that will pass until next preset is ran.")]
@@ -59,10 +53,22 @@ namespace Lights.Configs
         public float TimeBetweenMax { get; set; } = 82;
 
         /// <summary>
+        /// Gets or sets the minimum amount of time until presets begin getting looped through.
+        /// </summary>
+        [Description("The delay until the plugin begins going through the presets.")]
+        public float InitialDelay { get; set; } = 32;
+
+        /// <summary>
+        /// Gets or sets a list of presets, one of which will be selected as the first preset ran, taking from <see cref="PerZone"/> and <see cref="PerRoom"/>.
+        /// </summary>
+        [Description("One of the presets listed here will be randomly selected to be the first preset ran. (Starting a line with \"!\" will make it be ignored, use this if you don't wanna use this system)")]
+        public string[] InitialPreset { get; set; } = { "!ignore", "!ignored2" };
+
+        /// <summary>
         /// Gets or sets the order on which presets will be ran, taking from <see cref="PerZone"/> and <see cref="PerRoom"/>.
         /// </summary>
         [Description("The order on which presets will be ran.")]
-        public string[] Order { get; set; } = { "myZonePreset1", "myZonePreset2", "myRoomPreset1", "myRoomPreset2", };
+        public string[] Order { get; set; } = { "myZonePreset2", "myRoomPreset1", "myRoomPreset2", };
 
         /// <summary>
         /// Gets or sets a dictionary containing all <see cref="ZoneType"/>-exclusive presets.
