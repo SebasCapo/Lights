@@ -79,13 +79,13 @@ namespace Lights.Commands
             // /lights Room/Zone 12 Color 5 255 255
             if (arguments.Count > 2 && Enum.TryParse(arguments.At(2), true, out ModifierType modifierType))
             {
-                var rgb = new float[] { 0.75f, 255, 255 };
+                var rgb = new float[] { 0.75f, 255f, 255f };
                 var duration = 15f;
 
-                if (float.TryParse(arguments.At(1), out var dur))
+                if (float.TryParse(arguments.At(1), out float dur))
                     duration = dur;
 
-                if (arguments.Count > 3 && float.TryParse(arguments.At(3), out var r))
+                if (arguments.Count > 3 && float.TryParse(arguments.At(3), out float r))
                     rgb[0] = r;
 
                 if (arguments.Count > 4 && float.TryParse(arguments.At(4), out var g))

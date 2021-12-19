@@ -11,11 +11,12 @@ namespace Lights
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using MEC;
+    using UnityEngine;
 
     /// <summary>
     /// Handles events subscribed from <see cref="Exiled.Events.Handlers"/>.
     /// </summary>
-    public partial class EventHandlers
+    public class EventHandlers
     {
         private readonly Config config;
         private int presetIndex;
@@ -35,20 +36,16 @@ namespace Lights
         /// Gets a <see cref="List{T}"/> containing the <see cref="UnityEngine.Object.GetInstanceID()">Instance IDs</see> of all rooms
         /// whose lights were affected (Depending on config settings), teslas in these rooms won't trigger.
         /// </summary>
-        public List<int> DisabledTeslas { get; private set; }
+        public List<int> DisabledTeslas { get; }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
-        public void OnRoundStarted() => Plugin.Coroutines.Add(Timing.RunCoroutine(RunBlackouts()));
+        public void OnRoundStarted() => Plugin.Coroutines.Add(Timing.RunCoroutine(SetupPresets()));
 
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundEnded(RoundEndedEventArgs)"/>
-        public void OnRoundEnded(RoundEndedEventArgs _)
-#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
+        public void OnRoundEnded(RoundEndedEventArgs ev)
         {
-            foreach (var item in Plugin.Coroutines)
-            {
+            foreach (CoroutineHandle item in Plugin.Coroutines)
                 Timing.KillCoroutines(item);
-            }
 
             Plugin.Coroutines.Clear();
             DisabledTeslas.Clear();
@@ -57,19 +54,19 @@ namespace Lights
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnTriggeringTesla(TriggeringTeslaEventArgs)"/>
         public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
         {
-            var room = ev.Player.CurrentRoom;
+            Room room = ev.Player.CurrentRoom;
 
             if (room == null)
                 return;
 
             if (config.TeslaGates.SmartGates)
             {
-                var r = room.Color.r < Plugin.Instance.Config.TeslaGates.ColorSettings.R;
-                var g = room.Color.g < Plugin.Instance.Config.TeslaGates.ColorSettings.G;
-                var b = room.Color.b < Plugin.Instance.Config.TeslaGates.ColorSettings.B;
-                var belowColorMinimum = Plugin.Instance.Config.TeslaGates.ColorSettings.RequireAllMinimums ? r && g && b : r || g || b;
+                var r = room.Color.r < config.TeslaGates.ColorSettings.R;
+                var g = room.Color.g < config.TeslaGates.ColorSettings.G;
+                var b = room.Color.b < config.TeslaGates.ColorSettings.B;
+                var belowColorMinimum = config.TeslaGates.ColorSettings.RequireAllMinimums ? r && g && b : r || g || b;
 
-                if (room.LightsOff || belowColorMinimum || room.LightIntensity < Plugin.Instance.Config.TeslaGates.IntensityMinimum)
+                if (room.LightsOff || belowColorMinimum || room.LightIntensity < config.TeslaGates.IntensityMinimum)
                     ev.IsTriggerable = false;
 
                 return;
@@ -79,7 +76,10 @@ namespace Lights
                 ev.IsTriggerable = false;
         }
 
-        private IEnumerator<float> RunBlackouts()
+        /// <inheritdoc cref="Exiled.Events.Handlers.Warhead.OnStopping(StoppingEventArgs)"/>
+        public void OnStopping(StoppingEventArgs ev) => Timing.RunCoroutine(SetupPresets());
+
+        private IEnumerator<float> SetupPresets()
         {
             if (!config.Presets.AreEnabled)
                 yield break;
@@ -88,19 +88,19 @@ namespace Lights
 
             if (!config.Presets.InitialPreset.IsEmpty())
             {
-                var id = config.Presets.InitialPreset[UnityEngine.Random.Range(0, config.Presets.InitialPreset.Length)];
+                var id = config.Presets.InitialPreset[Random.Range(0, config.Presets.InitialPreset.Length)];
 
                 if (!string.IsNullOrEmpty(id) && !id.StartsWith("!"))
                 {
                     if (config.Presets.PerZone.TryTriggerPreset(id))
                     {
                         Log.Debug($"Automatically ran initial zone preset: \"{id}\"", config.Debug);
-                        yield return Timing.WaitForSeconds(UnityEngine.Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
+                        yield return Timing.WaitForSeconds(Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
                     }
                     else if (config.Presets.PerRoom.TryTriggerPreset(id))
                     {
                         Log.Debug($"Automatically ran initial room preset: \"{id}\"", config.Debug);
-                        yield return Timing.WaitForSeconds(UnityEngine.Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
+                        yield return Timing.WaitForSeconds(Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
                     }
                     else
                     {
@@ -114,7 +114,7 @@ namespace Lights
                 string id;
                 if (config.Presets.RandomOrder)
                 {
-                    id = config.Presets.Order[UnityEngine.Random.Range(0, config.Presets.Order.Length)];
+                    id = config.Presets.Order[Random.Range(0, config.Presets.Order.Length)];
                 }
                 else
                 {
@@ -131,7 +131,7 @@ namespace Lights
                 else
                     Log.Error($"Couldn't find any presets with ID \"{id}\", make sure there's no typos.");
 
-                yield return Timing.WaitForSeconds(UnityEngine.Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
+                yield return Timing.WaitForSeconds(Random.Range(config.Presets.TimeBetweenMin, config.Presets.TimeBetweenMax));
             }
         }
     }

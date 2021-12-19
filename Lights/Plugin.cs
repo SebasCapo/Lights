@@ -13,22 +13,17 @@ namespace Lights
     using MEC;
     using PlayerHandlers = Exiled.Events.Handlers.Player;
     using ServerHandlers = Exiled.Events.Handlers.Server;
+    using WarheadHandlers = Exiled.Events.Handlers.Warhead;
 
     /// <summary>
     /// The main plugin class.
     /// </summary>
     public class Plugin : Plugin<Config>
     {
-        private static readonly Plugin InstanceValue = new Plugin();
-
-        private Plugin()
-        {
-        }
-
         /// <summary>
         /// Gets an instance of the <see cref="Plugin"/> class.
         /// </summary>
-        public static Plugin Instance { get; } = InstanceValue;
+        public static Plugin Instance { get; private set; }
 
         /// <summary>
         /// Gets an instance of the <see cref="Lights.EventHandlers"/> class.
@@ -53,11 +48,12 @@ namespace Lights
         public override Version Version => new Version(4, 0, 1);
 
         /// <inheritdoc />
-        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(4, 1, 7);
 
         /// <inheritdoc />
         public override void OnEnabled()
         {
+            Instance = this;
             EventHandlers = new EventHandlers(this);
             RegisterEvents();
 
@@ -69,6 +65,7 @@ namespace Lights
         {
             UnregisterEvents();
             EventHandlers = null;
+            Instance = null;
 
             base.OnDisabled();
         }
@@ -78,6 +75,7 @@ namespace Lights
             ServerHandlers.RoundStarted += EventHandlers.OnRoundStarted;
             ServerHandlers.RoundEnded += EventHandlers.OnRoundEnded;
             PlayerHandlers.TriggeringTesla += EventHandlers.OnTriggeringTesla;
+            WarheadHandlers.Stopping += EventHandlers.OnStopping;
         }
 
         private void UnregisterEvents()
@@ -85,6 +83,7 @@ namespace Lights
             ServerHandlers.RoundStarted -= EventHandlers.OnRoundStarted;
             ServerHandlers.RoundEnded -= EventHandlers.OnRoundEnded;
             PlayerHandlers.TriggeringTesla -= EventHandlers.OnTriggeringTesla;
+            WarheadHandlers.Stopping -= EventHandlers.OnStopping;
         }
     }
 }
