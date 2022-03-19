@@ -44,7 +44,7 @@ namespace Lights
                     if (!Plugin.Instance.Config.TeslaGates.SmartGates
                         && room.LightIntensity < Plugin.Instance.Config.TeslaGates.IntensityMinimum)
                     {
-                        if (Plugin.EventHandlers.DisabledTeslas.Contains(id))
+                        if (!Plugin.EventHandlers.DisabledTeslas.Contains(id))
                             Plugin.EventHandlers.DisabledTeslas.Add(id);
                     }
 
@@ -80,7 +80,7 @@ namespace Lights
 
                         if (shouldDisableTeslas)
                         {
-                            if (Plugin.EventHandlers.DisabledTeslas.Contains(id))
+                            if (!Plugin.EventHandlers.DisabledTeslas.Contains(id))
                                 Plugin.EventHandlers.DisabledTeslas.Add(id);
                         }
                     }
@@ -101,7 +101,7 @@ namespace Lights
 
                     if (!Plugin.Instance.Config.TeslaGates.SmartGates && Plugin.Instance.Config.TeslaGates.DisableOnBlackout)
                     {
-                        if (Plugin.EventHandlers.DisabledTeslas.Contains(id))
+                        if (!Plugin.EventHandlers.DisabledTeslas.Contains(id))
                             Plugin.EventHandlers.DisabledTeslas.Add(id);
                     }
 
