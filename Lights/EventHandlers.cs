@@ -66,7 +66,7 @@ namespace Lights
                 var b = room.Color.b < config.TeslaGates.ColorSettings.B;
                 var belowColorMinimum = config.TeslaGates.ColorSettings.RequireAllMinimums ? r && g && b : r || g || b;
 
-                if (room.LightsOff || belowColorMinimum || room.LightIntensity < config.TeslaGates.IntensityMinimum)
+                if (!room.LightsOn || belowColorMinimum || room.LightIntensity < config.TeslaGates.IntensityMinimum)
                     ev.IsTriggerable = false;
 
                 return;

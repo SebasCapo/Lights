@@ -96,7 +96,7 @@ namespace Lights.Commands
 
                 if (Enum.TryParse(arguments.At(0), out RoomType roomType))
                 {
-                    foreach (var item in Map.Rooms)
+                    foreach (var item in Room.List)
                     {
                         if (item.Type != roomType)
                             continue;
@@ -109,7 +109,7 @@ namespace Lights.Commands
                 }
                 else if (Enum.TryParse(arguments.At(0), out ZoneType zoneType))
                 {
-                    foreach (var item in Map.Rooms)
+                    foreach (var item in Room.List)
                     {
                         if (item.Zone != zoneType)
                             continue;

@@ -132,7 +132,7 @@ namespace Lights
             {
                 foreach (var preset in presets)
                 {
-                    foreach (var room in Map.Rooms)
+                    foreach (var room in Room.List)
                     {
                         if (room.Zone != preset.Location)
                             continue;
@@ -171,7 +171,7 @@ namespace Lights
             {
                 foreach (var preset in presets)
                 {
-                    foreach (var room in Map.Rooms)
+                    foreach (var room in Room.List)
                     {
                         if (room.Type != preset.Location)
                             continue;
