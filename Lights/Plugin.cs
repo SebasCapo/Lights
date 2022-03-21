@@ -48,7 +48,7 @@ namespace Lights
         public override Version Version => new Version(5, 0, 0);
 
         /// <inheritdoc />
-        public override Version RequiredExiledVersion { get; } = new Version(5, 0, 5);
+        public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
 
         /// <inheritdoc />
         public override void OnEnabled()
