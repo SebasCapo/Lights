@@ -2,7 +2,7 @@
 <a href="https://github.com/SebasCapo/Lights/releases"><img src="https://img.shields.io/github/v/release/SebasCapo/Lights?include_prereleases&label=Release" alt="Releases"></a>
 <a href="https://discord.gg/PyUkWTg"><img src="https://img.shields.io/discord/656673194693885975?color=%23aa0000&label=EXILED" alt="Support"></a>
 
-# Lights 4.0
+# Lights 5.0
 An extremely configurable SCP:SL-EXILED Plugin that allows you to control many aspects of it's facility's power systems.
 
 ### What does it do?
