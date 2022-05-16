@@ -4,6 +4,7 @@
 
 # Lights 5.0
 An extremely configurable SCP:SL-EXILED Plugin that allows you to control many aspects of it's facility's power systems.
+**Compatiable with EXILED 5.0**
 
 ### What does it do?
 This plugin lets you change a variety of different settings per room and/or zone, these settings vary from changing a lights color, to turning them off! You can even lock all the doors in a room indefinitely or temporarily.
